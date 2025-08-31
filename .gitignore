@@ -1,3 +1,4 @@
 .env
 tweets_*.json
+summaries_*.json
 node_modules
