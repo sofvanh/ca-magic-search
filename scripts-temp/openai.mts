@@ -23,3 +23,15 @@ export async function generateSummary(tweets: string[]): Promise<string> {
 
   return response.output_text;
 }
+
+export async function mergeSummaries(summaries: string[]): Promise<string> {
+  const response = await client.responses.create({
+    model: "gpt-4.1-mini",
+    input: `Merge the following ${summaries.length} summaries of the same person, bringing all the information together into one summary of the exact same style and tone. The summary should not exceed 10000 characters (~ 10 paragraphs).
+    
+    Summaries: ${summaries.join('\n\n\n\n')}
+    `
+  });
+
+  return response.output_text;
+}
