@@ -16,7 +16,7 @@ Preview with `npm run preview`
 
 ### Data wrangling
 
-Pull tweets and generate some summaries: `cd scripts-temp`, `npx ts-node generate_summaries.mts`
+Pull tweets and generate some summaries: `cd scripts-temp`, `npx ts-node generate-test-summaries.mts`
 
 Env vars required for data wrangling:
 - `SUPABASE_ANON_KEY` (See Community Archive docs)
