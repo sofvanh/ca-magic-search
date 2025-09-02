@@ -2,25 +2,22 @@
 
 WIP. More info: https://x.com/sofvanh/status/1962519165513748601
 
-## SvelteKit info
+## Dev info
 
-### Developing
+### Start a development server (sveltekit)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+`npm install` then `npm run dev`
 
-```sh
-npm run dev
+### Build a production version
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+`npm run build`
 
-### Building
+Preview with `npm run preview`
 
-To create a production version of your app:
+### Data wrangling
 
-```sh
-npm run build
-```
+Pull tweets and generate some summaries: `cd scripts-temp`, `npx ts-node generate_summaries.mts`
 
-You can preview the production build with `npm run preview`.
+Env vars required for data wrangling:
+- `SUPABASE_ANON_KEY` (See Community Archive docs)
+- `OPENAI_API_KEY`
