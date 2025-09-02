@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js';
+import type { Tweet } from './types.mts';
 
 dotenv.config()
 
@@ -7,23 +8,9 @@ const supabaseUrl = 'https://fabxmporizzqflnftavs.supabase.co';
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey!);
 
-export async function getTweetsForUser(account_id: string): Promise<string[]> {
-  const { data, error } = await supabase
-    .schema('public')
-    .from('tweets')
-    .select('full_text')
-    .eq('account_id', account_id)
 
-  if (error) {
-    console.error("Error fetching tweets:", error);
-    throw error;
-  }
-
-  return data.map((tweet) => tweet.full_text)
-}
-
-export async function getTweetsPaginated(accountId: string): Promise<string[]> {
-  let allTweets: string[] = [];
+export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
+  let allTweets: Tweet[] = [];
   let batchSize = 1000;
   let offset = 0;
   let done = false;
@@ -32,9 +19,10 @@ export async function getTweetsPaginated(accountId: string): Promise<string[]> {
     const { data, error } = await supabase
       .schema('public')
       .from('tweets')
-      .select('full_text')
+      .select('full_text, created_at')
       .eq('account_id', accountId)
       .not('full_text', 'like', 'RT @%') // Exclude retweets
+      .order('created_at', { ascending: true }) // Get oldest tweets first
       .range(offset, offset + batchSize - 1); // Fetch a batch of 1000
 
     if (error) {
@@ -45,7 +33,7 @@ export async function getTweetsPaginated(accountId: string): Promise<string[]> {
     console.log(`Got ${data.length} tweets`)
 
     if (data.length > 0) {
-      allTweets = allTweets.concat(data.map((tweet) => tweet.full_text)); // Accumulate tweets
+      allTweets = allTweets.concat(data); // Accumulate tweets
       offset += batchSize; // Move to the next batch
     }
 

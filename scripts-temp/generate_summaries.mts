@@ -2,6 +2,7 @@ import { getAccountIdsToUsernames, getTweetsPaginated } from './community-archiv
 import { generateSummary, mergeSummaries } from './openai.mts'
 import { writeFile } from 'fs/promises';
 import { log, storeLog } from './logger.mts';
+import type { Summary, Tweet } from './types.mts';
 
 const testAccounts = ['sofvanh', 'andrepology', 'exgenesis'];
 
@@ -22,18 +23,18 @@ for (const account of accounts.keys()) {
 
   // TODO Would be good if, if there's lots of tweets, we could be fetching tweets and generating summaries in parallel
 
-  // TODO Should take the times of tweets into account
-
   const tweets = await getTweetsPaginated(account);
-  const chunkedSummaries: string[] = [];
-  for (let i = 0; i < tweets.length; i += 25000) {
+  const chunkedTweets = chunkTweets(tweets);
+  const chunkedSummaries: Summary[] = [];
+
+  for (let i = 0; i < chunkedTweets.length; i++) {
+    let chunk = chunkedTweets[i];
     storeLog(
-      `Tweets for ${username} (chunk ${i / 25000 + 1}):\n` +
-      tweets.slice(i, i + 25000)
-        .map((tweet, idx) => `[${i + idx}] ${tweet}`)
+      `Tweets for ${username} (chunk ${i + 1}):\n` +
+      chunk.map((tweet, idx) => `[${i + idx}] ${tweet.created_at}: ${tweet.full_text}`)
         .join('\n\n\n')
     );
-    const summary = await generateSummary(tweets.slice(i, i + 25000));
+    const summary = await generateSummary(chunk);
     chunkedSummaries.push(summary);
   }
   if (chunkedSummaries.length > 1) {
@@ -42,13 +43,14 @@ for (const account of accounts.keys()) {
     summaries.set(account, summary);
   } else {
     log(`Generated summary for ${username}`)
-    summaries.set(account, chunkedSummaries[0]);
+    summaries.set(account, chunkedSummaries[0].summary);
   }
 
   storeLog(
     `Generated summary for ${username}\n` +
     `Number of tweets: ${tweets.length}\n` +
-    `Chunked summaries:\n${chunkedSummaries.join('\n---\n')}\n` +
+    `Number of chunked summaries: ${chunkedSummaries.length}\n` +
+    `Chunked summaries content:\n${chunkedSummaries.map(s => `${s.timeWindow}\n${s.summary}`).join('\n---\n')}\n` +
     `Final summary:\n${summaries.get(account)}`
   )
 }
@@ -61,3 +63,12 @@ for (const [account, summary] of summaries.entries()) {
 // TODO: Embed summaries and store in a database
 const timestamp = Date.now();
 await writeFile(`summaries/${timestamp}.json`, JSON.stringify(summariesObj, null, 2));
+
+function chunkTweets(tweets: Tweet[]): Tweet[][] {
+  const numChunks = Math.ceil(tweets.length / 30000);
+  const chunkSize = Math.ceil(tweets.length / numChunks);
+  const chunkedTweets: Tweet[][] = Array.from({ length: numChunks }, (_, i) =>
+    tweets.slice(i * chunkSize, (i + 1) * chunkSize)
+  );
+  return chunkedTweets;
+}
