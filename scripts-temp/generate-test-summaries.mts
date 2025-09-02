@@ -2,7 +2,7 @@ import { generateSummaries } from './summaries.mts'
 import { writeFileSync } from 'fs'
 
 async function main() {
-  const usernames = ['sofvanh', '	andrepology', 'exgenesis']
+  const usernames = ['sofvanh', 'mkstra', 'exgenesis']
   const summaries = await generateSummaries(usernames)
   const timestamp = Date.now()
   const obj: Record<string, string> = {}

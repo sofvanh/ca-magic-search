@@ -46,10 +46,11 @@ export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
   return allTweets; // Return the accumulated results
 }
 
-export async function getAccountIdsToUsernames(): Promise<Map<string, string>> {
+export async function getAccountIdsToUsernames(usernames: string[]): Promise<Map<string, string>> {
   const { data, error } = await supabase
     .from('account')
     .select('account_id, username')
+    .in('username', usernames);
 
   if (error) {
     console.error("Error fetching accounts:", error);
