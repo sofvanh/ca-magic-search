@@ -1,5 +1,4 @@
 .env
-summaries/
-tweets_*.json
-summaries_*.json
+/summaries/
+/logs/
 node_modules
