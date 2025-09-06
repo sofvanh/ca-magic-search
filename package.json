@@ -36,6 +36,7 @@
 		"vite": "^7.0.4"
 	},
 	"dependencies": {
-		"@fontsource-variable/inconsolata": "^5.2.6"
+		"@fontsource-variable/inconsolata": "^5.2.6",
+		"firebase-admin": "^13.5.0"
 	}
 }
