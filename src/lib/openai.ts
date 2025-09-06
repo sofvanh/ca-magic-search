@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
-import type { Summary, Tweet } from './types.mts';
-import { log } from './logger.mts';
+import type { Summary, Tweet } from './types.js';
+// import { log } from './logger.ts';
+import { log } from "./logger"
 
 dotenv.config();
 

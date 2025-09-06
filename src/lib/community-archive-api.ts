@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js';
-import type { Tweet } from './types.mts';
+import type { Tweet } from './types';
 
 dotenv.config()
 

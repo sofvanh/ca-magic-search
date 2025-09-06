@@ -61,4 +61,44 @@
 		color: var(--color-lime-800);
 		text-decoration: underline;
 	}
+	:global(textarea),
+	:global(input) {
+		font-family: inherit;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--color-stone-300, #d6d3d1);
+		padding: 1rem;
+		background: #fff;
+		color: inherit;
+		transition: border-color 0.2s;
+	}
+	:global(textarea:focus),
+	:global(input:focus) {
+		outline: none;
+		border-color: var(--color-lime-600);
+		box-shadow: 0 0 0 2px var(--color-lime-100);
+	}
+	:global(button) {
+		font-family: inherit;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--color-lime-600);
+		padding: 0.75rem 1.5rem;
+		background: var(--color-lime-600);
+		color: #fff;
+		cursor: pointer;
+		transition:
+			background 0.2s,
+			border-color 0.2s,
+			color 0.2s;
+	}
+	:global(button:disabled) {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+	:global(button:hover):not(:disabled),
+	:global(button:focus):not(:disabled) {
+		background: var(--color-lime-800);
+		border-color: var(--color-lime-800);
+	}
 </style>

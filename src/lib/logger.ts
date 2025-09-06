@@ -5,6 +5,7 @@ export function log(messsage: string) {
 }
 
 export function storeLog(messsage: string) {
-  const ts = Date.now();
-  writeFile(`logs/${ts}.txt`, messsage + '\n');
+  // const ts = Date.now();
+  // writeFile(`logs/${ts}.txt`, messsage + '\n');
+  log(messsage);
 }

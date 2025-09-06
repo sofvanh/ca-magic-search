@@ -1,18 +1,18 @@
-import { getAccountIdsToUsernames, getTweetsPaginated } from './community-archive-api.mts'
-import { generateSummary, mergeSummaries } from './openai.mts'
-import { log, storeLog } from './logger.mts';
-import type { Summary, Tweet } from './types.mts';
+import { getAccountIdsToUsernames, getTweetsPaginated } from './community-archive-api'
+import { generateSummary, mergeSummaries } from './openai'
+import { log, storeLog } from './logger';
+import type { Summary, Tweet } from './types';
 import dotenv from 'dotenv';
 
 dotenv.config();
 const debug = process.env.DEBUG === 'true';
 
 
-export async function generateSummaries(usernames: string[]): Promise<Map<string, string>> {
+export async function generateSummaries(usernames: string[]): Promise<{ id: string, username: string, summary: string }[]> {
   const accounts = await getAccountIdsToUsernames(usernames);
   if (debug) log(`Found ${accounts.size} accounts to process`)
 
-  const summaries = new Map<string, string>();
+  const summaries: { id: string, username: string, summary: string }[] = [];
   for (const account of accounts.keys()) {
 
     // TODO Would be good if, if there's lots of tweets, we could be fetching tweets and generating summaries in parallel
@@ -27,7 +27,7 @@ export async function generateSummaries(usernames: string[]): Promise<Map<string
     const finalSummary = await getFinalSummary(chunkedSummaries)
 
     log(`Generated summary for ${username}`)
-    summaries.set(account, finalSummary);
+    summaries.push({ id: account, username, summary: finalSummary });
 
     if (debug) createLog(username, tweets, chunkedSummaries, finalSummary);
   }
