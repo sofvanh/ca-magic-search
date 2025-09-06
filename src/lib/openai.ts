@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
-import type { Summary, Tweet } from './types.js';
-// import { log } from './logger.ts';
+import type { SummaryInTime, Tweet } from './types.js';
 import { log } from "./logger"
 
 dotenv.config();
@@ -11,7 +10,7 @@ const client = new OpenAI({
 });
 
 
-export async function generateSummary(tweets: Tweet[]): Promise<Summary> {
+export async function generateSummary(tweets: Tweet[]): Promise<SummaryInTime> {
   log(`Generating summary for ${tweets.length} tweets`);
 
   const firstDate = tweets[0]?.created_at;
@@ -32,7 +31,7 @@ export async function generateSummary(tweets: Tweet[]): Promise<Summary> {
   return { summary: response.output_text, timeWindow };
 }
 
-export async function mergeSummaries(summaries: Summary[]): Promise<string> {
+export async function mergeSummaries(summaries: SummaryInTime[]): Promise<string> {
   const response = await client.responses.create({
     model: "gpt-4.1-mini",
     input: `Merge the following ${summaries.length} summaries of the same person over time, bringing all the information together into one summary of the exact same style and tone. The summary should not exceed 10000 characters (~ 10 paragraphs).
@@ -45,4 +44,12 @@ export async function mergeSummaries(summaries: Summary[]): Promise<string> {
   });
 
   return response.output_text;
+}
+
+export async function getEmbeddings(text: string): Promise<number[]> {
+  const response = await client.embeddings.create({
+    model: "text-embedding-3-small",
+    input: text,
+  });
+  return response.data[0].embedding;
 }

@@ -1,10 +1,9 @@
-// src/routes/api/process-users/+server.ts
 import { json } from '@sveltejs/kit';
-// import { storeUserSummary } from '$lib/firebase';
-// import { generateSummary } from '$lib/openai';
+import { storeUserSummary } from '$lib/firebase';
 import { generateSummaries } from '$lib/summaries';
 import { log } from '$lib/logger';
 import dotenv from 'dotenv';
+import { getEmbeddings } from '$lib/openai';
 
 
 dotenv.config();
@@ -16,12 +15,22 @@ export async function POST({ request }) {
     return json({ success: false, error: 'Invalid admin password' });
   }
 
-  console.log('usernames', usernames);
-
   const summaries = await generateSummaries(usernames);
   log(`Generated summaries for ${usernames.length} users`);
 
-  console.log('summaries', summaries);
+  for (const summary of summaries) {
+    const embeddings = await getEmbeddings(summary.summary);
+    await storeUserSummary({
+      userId: summary.id,
+      username: summary.username,
+      summary: summary.summary,
+      embedding: embeddings,
+      tweetCount: summary.tweetCount,
+    });
+    log(`Stored summary for ${summary.username}`);
+  }
+
+  log(`Stored ${summaries.length} summaries in Firebase`);
 
   return json({ success: true, summaries });
 }

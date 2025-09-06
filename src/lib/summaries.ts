@@ -1,18 +1,18 @@
 import { getAccountIdsToUsernames, getTweetsPaginated } from './community-archive-api'
 import { generateSummary, mergeSummaries } from './openai'
 import { log, storeLog } from './logger';
-import type { Summary, Tweet } from './types';
+import type { SummaryInTime, Tweet } from './types';
 import dotenv from 'dotenv';
 
 dotenv.config();
 const debug = process.env.DEBUG === 'true';
 
 
-export async function generateSummaries(usernames: string[]): Promise<{ id: string, username: string, summary: string }[]> {
+export async function generateSummaries(usernames: string[]): Promise<{ id: string, username: string, summary: string, tweetCount: number }[]> {
   const accounts = await getAccountIdsToUsernames(usernames);
   if (debug) log(`Found ${accounts.size} accounts to process`)
 
-  const summaries: { id: string, username: string, summary: string }[] = [];
+  const summaries: { id: string, username: string, summary: string, tweetCount: number }[] = [];
   for (const account of accounts.keys()) {
 
     // TODO Would be good if, if there's lots of tweets, we could be fetching tweets and generating summaries in parallel
@@ -27,7 +27,7 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
     const finalSummary = await getFinalSummary(chunkedSummaries)
 
     log(`Generated summary for ${username}`)
-    summaries.push({ id: account, username, summary: finalSummary });
+    summaries.push({ id: account, username, summary: finalSummary, tweetCount: tweets.length });
 
     if (debug) createLog(username, tweets, chunkedSummaries, finalSummary);
   }
@@ -44,8 +44,8 @@ function chunkTweets(tweets: Tweet[]): Tweet[][] {
   return chunkedTweets;
 }
 
-async function getChunkedSummaries(chunkedTweets: Tweet[][]): Promise<Summary[]> {
-  const chunkedSummaries: Summary[] = [];
+async function getChunkedSummaries(chunkedTweets: Tweet[][]): Promise<SummaryInTime[]> {
+  const chunkedSummaries: SummaryInTime[] = [];
   for (const chunk of chunkedTweets) {
     const summary = await generateSummary(chunk);
     chunkedSummaries.push(summary);
@@ -53,7 +53,7 @@ async function getChunkedSummaries(chunkedTweets: Tweet[][]): Promise<Summary[]>
   return chunkedSummaries;
 }
 
-async function getFinalSummary(chunkedSummaries: Summary[]): Promise<string> {
+async function getFinalSummary(chunkedSummaries: SummaryInTime[]): Promise<string> {
   if (chunkedSummaries.length > 1) {
     return await mergeSummaries(chunkedSummaries);
   } else {
@@ -61,7 +61,7 @@ async function getFinalSummary(chunkedSummaries: Summary[]): Promise<string> {
   }
 }
 
-async function createLog(username: string, tweets: Tweet[], chunkedSummaries: Summary[], summary: string) {
+async function createLog(username: string, tweets: Tweet[], chunkedSummaries: SummaryInTime[], summary: string) {
   storeLog(
     `Generated summary for ${username}\n` +
     `Number of tweets: ${tweets.length}\n` +
