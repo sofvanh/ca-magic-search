@@ -1,7 +1,7 @@
-import { getAccountIdsToUsernames, getTweetsPaginated } from './server/community-archive-api'
-import { generateSummary, mergeSummaries } from './server/openai'
-import { log, storeLog } from './server/logger';
-import type { SummaryInTime, Tweet } from './types';
+import { getAccountIdsToUsernames, getTweetsPaginated } from './community-archive-api'
+import { generateSummary, mergeSummaries } from './openai'
+import { log, storeLog } from './logger';
+import type { SummaryInTime, Tweet } from '../types';
 import dotenv from 'dotenv';
 
 dotenv.config();

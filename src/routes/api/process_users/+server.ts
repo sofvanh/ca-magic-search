@@ -1,9 +1,9 @@
 import { json } from '@sveltejs/kit';
-import { storeUserSummary } from '$lib/firebase';
-import { generateSummaries } from '$lib/summaries';
-import { log } from '$lib/logger';
+import { storeUserSummary } from '$lib/server/firebase';
+import { generateSummaries } from '$lib/server/summaries';
+import { log } from '$lib/server/logger';
 import dotenv from 'dotenv';
-import { getEmbeddings } from '$lib/openai';
+import { getEmbeddings } from '$lib/server/openai';
 
 
 dotenv.config();

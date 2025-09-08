@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
-import type { SummaryInTime, Tweet } from './types.js';
+import type { SummaryInTime, Tweet } from '../types.js';
 import { log } from "./logger"
 
 dotenv.config();
