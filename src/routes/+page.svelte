@@ -45,11 +45,16 @@
 		</span>
 	</p>
 
-	<textarea
-		class="h-48 w-full rounded-md border border-stone-300 p-4 placeholder-stone-400"
-		placeholder="What are you searching for?"
-		style="resize: none;"
-	></textarea>
+	<form class="relative w-full" action="/search">
+		<input
+			name="q"
+			type="text"
+			class="w-full p-4 pr-20!"
+			placeholder="What are you searching for?"
+			required
+		/>
+		<button class="absolute top-2 right-2 p-2!" aria-label="Search">Search</button>
+	</form>
 
 	<p class="text-center text-sm text-stone-500">
 		Search the entire Community Archive for your niche need

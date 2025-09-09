@@ -22,7 +22,7 @@ export async function storeUserSummary(data: {
     userId: data.userId,
     username: data.username,
     summary: data.summary,
-    embedding: data.embedding,
+    embedding: FieldValue.vector(data.embedding),
     tweetCount: data.tweetCount,
     createdAt: FieldValue.serverTimestamp(),
   });
