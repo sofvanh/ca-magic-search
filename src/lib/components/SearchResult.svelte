@@ -46,37 +46,29 @@
 	</div>
 
 	{#if explanation}
-		<p class="text-stone-500" in:slide out:slide>{explanation}</p>
+		<p class="text-stone-500" in:slide|global out:slide|global>
+			{explanation}
+		</p>
 	{:else if isLoading}
-		<p class="text-stone-400 italic" in:slide out:slide>Loading explanation...</p>
+		<p class="text-stone-400 italic" in:slide|global out:slide|global>Loading...</p>
 	{:else}
-		<button onclick={loadExplanation} out:slide>
-			Load explanation <span aria-hidden="true">↓</span>
+		<button in:slide|global out:slide|global onclick={loadExplanation} class="...">
+			<span aria-hidden="true">↓</span>
+			Details
 		</button>
 	{/if}
 </div>
 
 <style>
 	button {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.25em;
+		display: block;
 		padding: 0.25em 0.75em;
-		/* border: 1px solid #d4d4d8; */
 		border: none;
-		border-radius: 0.375em;
 		background: var(--color-stone-100);
 		color: var(--color-stone-700);
-		font-size: 0.95em;
-		cursor: pointer;
-		transition:
-			background 0.15s,
-			border-color 0.15s,
-			color 0.15s;
 	}
 	button:hover {
 		background: var(--color-stone-200);
-		border-color: var(--color-stone-300);
 		color: var(--color-stone-700);
 	}
 </style>
