@@ -5,9 +5,18 @@ import type { SupabaseAccountInfo, Tweet } from '../types';
 dotenv.config()
 
 const supabaseUrl = 'https://fabxmporizzqflnftavs.supabase.co';
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey!);
+let supabase: any = null;
 
+function getSupabase() {
+  if (!supabase) {
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
+    if (!supabaseKey) {
+      throw new Error('SUPABASE_ANON_KEY environment variable is required');
+    }
+    supabase = createClient(supabaseUrl, supabaseKey);
+  }
+  return supabase;
+}
 
 export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
   let allTweets: Tweet[] = [];
@@ -16,7 +25,7 @@ export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
   let done = false;
 
   while (!done) {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .schema('public')
       .from('tweets')
       .select('full_text, created_at')
@@ -47,7 +56,7 @@ export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
 }
 
 export async function getAccountInfo(usernames: string[]): Promise<SupabaseAccountInfo[]> {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from('account')
     .select('account_id, username, account_display_name')
     .in('username', usernames);
