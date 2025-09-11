@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
-import type { SummaryInTime, Tweet } from '../types.js';
+import type { SummaryInTime, Tweet, UserSummary } from '../types.js';
 import { log } from "./logger"
 
 dotenv.config();
@@ -34,7 +34,7 @@ export async function generateSummary(tweets: Tweet[]): Promise<SummaryInTime> {
 export async function mergeSummaries(summaries: SummaryInTime[]): Promise<string> {
   const response = await client.responses.create({
     model: "gpt-4.1-mini",
-    input: `Merge the following ${summaries.length} summaries of the same person over time, bringing all the information together into one summary of the exact same style and tone. The summary should not exceed 10000 characters (~ 10 paragraphs).
+    input: `Merge the following ${summaries.length} summaries of the same person over time, bringing all the information together into one summary of the exact same style and tone. The summary should not exceed 10000 characters (~ 10 paragraphs). Take note of the time window of each summary; Today is ${new Date().toISOString().split('T')[0]}. More recent information is more important.
     
     Summaries: 
     
@@ -46,10 +46,23 @@ export async function mergeSummaries(summaries: SummaryInTime[]): Promise<string
   return response.output_text;
 }
 
-export async function getEmbeddings(text: string): Promise<number[]> {
+export async function getEmbedding(text: string): Promise<number[]> {
   const response = await client.embeddings.create({
     model: "text-embedding-3-small",
     input: text,
   });
   return response.data[0].embedding;
+}
+
+export async function explainSearchResult(summary: string, query: string): Promise<string> {
+  const response = await client.responses.create({
+    model: "gpt-4.1-mini",
+    input: `For the following query, give a very concise explanation (1-2 sentences) of how it matches with the following user summary:
+
+    Query: ${query}
+    User summary: ${summary}
+    `,
+  });
+  console.log(`${response.usage?.output_tokens} output tokens, ${response.output_text.length} characters in explanation`);
+  return response.output_text;
 }

@@ -13,8 +13,15 @@ export interface SummaryInTime {
 export interface UserSummary {
   userId: string;
   username: string;
+  displayName: string | null;
   summary: string;
   embedding: number[];  // 1536 dimensions from OpenAI
   tweetCount: number;
   createdAt: Timestamp;
+}
+
+export interface SupabaseAccountInfo {
+  account_id: string;
+  username: string;
+  account_display_name: string;
 }

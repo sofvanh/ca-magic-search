@@ -9,19 +9,19 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="flex min-h-screen flex-col">
-	<header class="flex items-center justify-between bg-stone-50">
-		<a href="/" class="flex flex-col items-center px-4 py-2">
-			<h1 class="text-2xl font-black tracking-wider">Magic Search</h1>
-			<p class="text-xs">For Community Archive</p>
-		</a>
-		<nav class="flex items-center gap-4 px-4 py-2">
-			<a href="/">Home</a>
-			<a href="/about">About</a>
-			<a href="/contact">Data</a>
-		</nav>
-	</header>
+<header class="fixed top-0 right-0 left-0 z-10 flex items-center justify-between bg-stone-50">
+	<a href="/" class="flex flex-col items-center px-4 py-2">
+		<h1 class="text-2xl font-black tracking-wider">Magic Search</h1>
+		<p class="text-xs">For Community Archive</p>
+	</a>
+	<nav class="flex items-center gap-4 px-4 py-2">
+		<a href="/">Home</a>
+		<a href="/about">About</a>
+		<a href="/contact">Data</a>
+	</nav>
+</header>
 
+<div class="flex min-h-screen flex-col pt-16">
 	<main class="flex flex-1 flex-col">{@render children?.()}</main>
 
 	<footer class="flex flex-col items-center justify-center bg-stone-50 px-4 py-8 text-sm">

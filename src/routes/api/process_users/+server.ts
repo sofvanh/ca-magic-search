@@ -3,7 +3,7 @@ import { storeUserSummary } from '$lib/server/firebase/store';
 import { generateSummaries } from '$lib/server/summaries';
 import { log } from '$lib/server/logger';
 import dotenv from 'dotenv';
-import { getEmbeddings } from '$lib/server/openai';
+import { getEmbedding } from '$lib/server/openai';
 
 
 dotenv.config();
@@ -19,10 +19,11 @@ export async function POST({ request }) {
   log(`Generated summaries for ${usernames.length} users`);
 
   for (const summary of summaries) {
-    const embeddings = await getEmbeddings(summary.summary);
+    const embeddings = await getEmbedding(summary.summary);
     await storeUserSummary({
       userId: summary.id,
       username: summary.username,
+      displayName: summary.displayName,
       summary: summary.summary,
       embedding: embeddings,
       tweetCount: summary.tweetCount,

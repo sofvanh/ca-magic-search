@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js';
-import type { Tweet } from '../types';
+import type { SupabaseAccountInfo, Tweet } from '../types';
 
 dotenv.config()
 
@@ -46,10 +46,10 @@ export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
   return allTweets; // Return the accumulated results
 }
 
-export async function getAccountIdsToUsernames(usernames: string[]): Promise<Map<string, string>> {
+export async function getAccountInfo(usernames: string[]): Promise<SupabaseAccountInfo[]> {
   const { data, error } = await supabase
     .from('account')
-    .select('account_id, username')
+    .select('account_id, username, account_display_name')
     .in('username', usernames);
 
   if (error) {
@@ -57,7 +57,6 @@ export async function getAccountIdsToUsernames(usernames: string[]): Promise<Map
     throw error;
   }
 
-  const accountMap = new Map(data.map((account: any) => [account.account_id, account.username]));
-
-  return accountMap;
+  const accounts = data as SupabaseAccountInfo[];
+  return accounts;
 }

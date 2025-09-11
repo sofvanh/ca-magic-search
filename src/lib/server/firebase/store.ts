@@ -12,6 +12,7 @@ export const db = getFirestore(app);
 export async function storeUserSummary(data: {
   userId: string;
   username: string;
+  displayName: string;
   summary: string;
   embedding: number[];
   tweetCount: number;
@@ -21,6 +22,7 @@ export async function storeUserSummary(data: {
   await docRef.set({
     userId: data.userId,
     username: data.username,
+    displayName: data.displayName,
     summary: data.summary,
     embedding: FieldValue.vector(data.embedding),
     tweetCount: data.tweetCount,
