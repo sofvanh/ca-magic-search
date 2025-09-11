@@ -14,6 +14,10 @@ WIP. More info: https://x.com/sofvanh/status/1962519165513748601
 
 Preview with `npm run preview`
 
+### Deploy on Google Cloud
+
+Create `.env.yaml` with env vars using `NAME: KEY` format. Then deploy by running `./scripts/deploy.sh`. Make sure your firestore is setup.
+
 ### Index users
 
 Navigate to /admin
