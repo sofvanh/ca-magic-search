@@ -31,28 +31,30 @@
 </script>
 
 <div class="w-full rounded-md border border-stone-200 p-4">
-	<div class="mb-2 flex flex-row gap-4">
-		{#if displayName}
-			<h2 class="text-lg font-semibold">{displayName}</h2>
-		{/if}
-		<a
-			href={`https://x.com/${username}`}
-			target="_blank"
-			class="mr-auto rounded-md bg-lime-100 px-2 py-1 text-lime-700 transition-all duration-200 hover:bg-lime-200 hover:text-lime-800"
-		>
-			@{username}
-		</a>
+	<div class="flex flex-row justify-between gap-2">
+		<div class="mb-2 flex flex-col gap-2 sm:flex-row sm:gap-4">
+			{#if displayName}
+				<h2 class="text-lg font-semibold">{displayName}</h2>
+			{/if}
+			<a
+				href={`https://x.com/${username}`}
+				target="_blank"
+				class="mr-auto rounded-md bg-lime-100 px-2 py-1 text-lime-700 transition-all duration-200 hover:bg-lime-200 hover:text-lime-800"
+			>
+				@{username}
+			</a>
+		</div>
 		<p class="text-sm text-stone-500">{(distance * 100).toFixed(2)}%</p>
 	</div>
 
 	{#if explanation}
-		<p class="text-stone-500" in:slide|global out:slide|global>
+		<p class="text-sm text-stone-500" in:slide|global out:slide|global>
 			{explanation}
 		</p>
 	{:else if isLoading}
-		<p class="text-stone-400 italic" in:slide|global out:slide|global>Loading...</p>
+		<p class="text-sm text-stone-400 italic" in:slide|global out:slide|global>Loading...</p>
 	{:else}
-		<button in:slide|global out:slide|global onclick={loadExplanation} class="...">
+		<button in:slide|global out:slide|global onclick={loadExplanation} class="text-sm!">
 			<span aria-hidden="true">↓</span>
 			Details
 		</button>
