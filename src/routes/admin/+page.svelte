@@ -37,7 +37,7 @@
 	}
 </script>
 
-<form onsubmit={processUsers} class="mx-auto w-full max-w-2xl">
+<form onsubmit={processUsers} class="mx-auto w-full max-w-2xl p-4">
 	<h1 class="my-12 text-2xl font-black">Process User Archives</h1>
 
 	<div class="flex flex-col gap-2">
