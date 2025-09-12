@@ -32,7 +32,13 @@
 </script>
 
 <div class="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-4 p-4">
-	<h1 class="text-center text-2xl font-black">Who do you need right now?</h1>
+	<p
+		class="mb-4 max-w-sm rounded-md border border-amber-200 bg-amber-50 p-3 text-center text-sm text-amber-800"
+	>
+		<strong>Beta:</strong> Only a fraction of users indexed. If you want to help in the testing, reach
+		out to @sofvanh !
+	</p>
+	<h1 class="text-center text-2xl font-semibold">Who do you need right now?</h1>
 	<p class="text-center">
 		Find the best person for
 		<span
@@ -49,7 +55,7 @@
 		<input
 			name="q"
 			type="text"
-			class="w-full p-4 pr-20!"
+			class="focus:shadow-3xl w-full p-4 pr-20! shadow-lg shadow-lime-500/20! transition-all! duration-300 focus:shadow-2xl! focus:shadow-lime-500/50!"
 			placeholder="What are you searching for?"
 			required
 		/>

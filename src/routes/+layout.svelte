@@ -11,7 +11,7 @@
 
 <header class="fixed top-0 right-0 left-0 z-10 flex items-center justify-between bg-stone-50">
 	<a href="/" class="flex flex-col items-center px-4 py-2">
-		<h1 class="text-2xl font-black tracking-wider">Magic Search</h1>
+		<h1 class="text-2xl font-semibold tracking-wider">Magic Search</h1>
 		<p class="text-xs">For Community Archive</p>
 	</a>
 	<nav class="flex items-center gap-4 px-4 py-2">
