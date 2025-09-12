@@ -36,7 +36,7 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
 }
 
 function chunkTweets(tweets: Tweet[]): Tweet[][] {
-  const numChunks = Math.ceil(tweets.length / 30000);
+  const numChunks = Math.ceil(tweets.length / 20000);
   const chunkSize = Math.ceil(tweets.length / numChunks);
   const chunkedTweets: Tweet[][] = Array.from({ length: numChunks }, (_, i) =>
     tweets.slice(i * chunkSize, (i + 1) * chunkSize)
