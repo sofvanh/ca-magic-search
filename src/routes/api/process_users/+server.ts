@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { storeUserSummary } from '$lib/server/firebase/store';
+import { storeUserSummary } from '$lib/server/firebase/firestore';
 import { generateSummaries } from '$lib/server/summaries';
 import { log } from '$lib/server/logger';
 import dotenv from 'dotenv';

@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { getEmbedding } from '$lib/server/openai';
-import { searchUserSummaries } from '$lib/server/firebase/search';
+import { searchUserSummaries } from '$lib/server/firebase/firestore';
 
 export const load: PageServerLoad = async ({ url }) => {
   const query = url.searchParams.get('q');

@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import type { UserSummary } from '$lib/types';
 
 const app = getApps().length === 0
   ? initializeApp({
@@ -7,7 +8,7 @@ const app = getApps().length === 0
   })
   : getApps()[0];
 
-export const db = getFirestore(app);
+const db = getFirestore(app);
 
 export async function storeUserSummary(data: {
   userId: string;
@@ -30,4 +31,19 @@ export async function storeUserSummary(data: {
   });
 
   return docRef.id;
+}
+
+export async function searchUserSummaries(queryEmbedding: number[], limit = 10): Promise<{ distance: number, userSummary: UserSummary }[]> {
+  const vectorQuery = db
+    .collection('user-summaries')
+    .findNearest({
+      vectorField: 'embedding',
+      queryVector: queryEmbedding,
+      limit,
+      distanceMeasure: 'DOT_PRODUCT',
+      distanceResultField: 'distance'
+    });
+
+  const snapshot = await vectorQuery.get();
+  return snapshot.docs.map(doc => ({ distance: doc.get('distance'), userSummary: doc.data() as UserSummary }));
 }
