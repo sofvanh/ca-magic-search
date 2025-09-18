@@ -26,8 +26,13 @@
 
 	<footer class="flex flex-col items-center justify-center bg-stone-50 px-4 py-8 text-sm">
 		<p class="px-4 py-2">
-			Created by <a href="https://sofiavanhanen.fi" target="_blank" rel="noopener noreferrer"
-				>Sofia Vanhanen</a
+			An <a
+				href="https://github.com/sofvanh/ca-magic-search"
+				target="_blank"
+				rel="noopener noreferrer">open-source project</a
+			>
+			by
+			<a href="https://sofiavanhanen.fi" target="_blank" rel="noopener noreferrer">Sofia Vanhanen</a
 			>
 			|
 			<a href="https://x.com/sofvanh" target="_blank" rel="noopener noreferrer">@sofvanh</a>

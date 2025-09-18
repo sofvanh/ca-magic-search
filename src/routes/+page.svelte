@@ -38,7 +38,7 @@
 		<strong>Beta:</strong> Only a fraction of users indexed. If you want to help in the testing, reach
 		out to @sofvanh !
 	</p>
-	<h1 class="text-center text-2xl font-semibold">Who do you need right now?</h1>
+	<h1 class="text-center text-2xl font-semibold tracking-wider">Who do you need right now?</h1>
 	<p class="text-center">
 		Find the best person for
 		<span

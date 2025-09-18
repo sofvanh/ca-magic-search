@@ -1,4 +1,4 @@
-<div class="mx-auto my-12 prose flex flex-col items-center">
+<div class="mx-auto my-12 prose flex flex-col items-center p-4">
 	<h1>Data</h1>
 
 	<p>
@@ -11,5 +11,27 @@
 	<p>
 		If you want your account to show up in the Magic Search results, you can upload your archive and
 		support the project!
+	</p>
+
+	<h2>Data processing</h2>
+
+	<p>
+		For every indexed user, we find all their authored tweets (not retweets or liked tweets) and
+		generate a summary of the person based on the archive. Currently we're using GPT-4.1-mini.
+	</p>
+
+	<p>
+		If think your account isn't represented properly, it's probably a prompting error, or
+		GPT-4.1-mini isn't intelligent enough to capture your magic with sufficient subtleness. Reach
+		out to @sofvanh if so.
+	</p>
+
+	<h2>Prompts</h2>
+
+	<p>
+		To see the prompts we use to generate the user summaries, see the <a
+			href="https://github.com/sofvanh/ca-magic-search/blob/main/src/lib/server/openai.ts"
+			>project source code</a
+		>.
 	</p>
 </div>
