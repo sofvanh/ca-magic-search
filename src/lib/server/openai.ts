@@ -1,7 +1,32 @@
 import dotenv from 'dotenv';
 import OpenAI from "openai";
-import type { SummaryInTime, Tweet, UserSummary } from '../types.js';
+import type { SummaryInTime, Tweet } from '../types.js';
 import { log } from "./logger"
+
+
+function SUMMARY_INSTRUCTION({ timeWindow, tweets }: { timeWindow: string, tweets: Tweet[] }) {
+  const TWEET_LIMIT = Number(process.env.TWEET_LIMIT) || 20000;
+  return `Generate a summary of the person based on their tweets. The summary should be up to 10000 characters (~ 10 paragraphs) long and as high-signal as possible. The summary should describe things that are even a little bit apparent from the person's tweets, including interests, skills, profession, experiences, values, vibe, aesthetic, personality, location, opinions and preferences, etc. Make the summary EXTREMELY CONCISE, like writing for an extremely busy executive, but make sure you keep all the information that's actually interesting and unique about the individual. Trim all fluff like "In summary, ..." or "Based on the tweets..." or "The individual is ..." or "They exhibit ..." You can just write, "Engaged in x, y, z", "active in x...", "Likely works in y..." etc. Prioritise overall trends and signals. Don't hype up the individual, just describe them as they are. If the list of tweets happens to be short / there's not much content, you can make the summary shorter.
+
+    These tweets were posted between ${timeWindow}.
+    Tweet count: ${tweets.length} (out of a maximum of ${TWEET_LIMIT})
+    Tweets: ${tweets.map(t => t.full_text).join('\n')}
+    `;
+}
+
+function MERGE_INSTRUCTION({ summaries }: { summaries: SummaryInTime[] }) {
+  return `Merge the following ${summaries.length} summaries of the same person over time, bringing all the information together into one summary of the exact same style and tone. The summary should not exceed 10000 characters (~ 10 paragraphs). Take note of the time window of each summary; Today is ${new Date().toISOString().split('T')[0]}. More recent information is more important and should be given more weight. Note also the number of tweets in each summary. Weigh the importance of each summary based on the number of tweets.
+
+    This was the instruction that was used to generate the summaries, please stick to it:
+
+    ${SUMMARY_INSTRUCTION({ timeWindow: "[time window]", tweets: [] })}
+    
+    Summaries: 
+    
+    
+    ${summaries.map(s => `${s.timeWindow}\nTweet count: ${s.tweetCount}\n\n${s.summary}`).join('\n\n\n\n')}
+    `;
+}
 
 dotenv.config();
 
@@ -24,29 +49,19 @@ export async function generateSummary(tweets: Tweet[]): Promise<SummaryInTime> {
   const timeWindow = `${firstDate} - ${lastDate}`;
   const response = await getClient().responses.create({
     model: "gpt-4.1-mini",
-    input: `Generate a summary of the person based on their tweets. The summary should be up to 10000 characters (~ 10 paragraphs) long and as high-signal as possible. The summary should describe things that are even a little bit apparent from the person's tweets, including interests, skills, profession, experiences, values, vibe, aesthetic, personality, location, opinions and preferences, etc. Make the summary EXTREMELY CONCISE, like writing for an extremely busy executive, but make sure you keep all the information that's actually interesting and unique about the individual. Trim all fluff like "In summary, ..." or "Based on the tweets..." or "The individual is ..." or "They exhibit ..." You can just write, "Engaged in x, y, z", "active in x...", "Likely works in y..." etc. Prioritise overall trends and signals. Don't hype up the individual, just describe them as they are.
-
-    These tweets were posted between ${timeWindow}.
-    Tweets: ${tweets.map(t => t.full_text).join('\n')}
-    `
+    input: SUMMARY_INSTRUCTION({ timeWindow, tweets }),
   });
 
   console.log(`${response.usage?.output_tokens} output tokens, ${response.output_text.length} characters in summary`);
   console.log(`Average tokens per tweet: ${((response.usage?.input_tokens ?? 0) / tweets.length).toFixed(2)} (${response.usage?.input_tokens} input tokens for ${tweets.length} tweets)`);
 
-  return { summary: response.output_text, timeWindow };
+  return { summary: response.output_text, timeWindow, tweetCount: tweets.length };
 }
 
 export async function mergeSummaries(summaries: SummaryInTime[]): Promise<string> {
   const response = await getClient().responses.create({
     model: "gpt-4.1-mini",
-    input: `Merge the following ${summaries.length} summaries of the same person over time, bringing all the information together into one summary of the exact same style and tone. The summary should not exceed 10000 characters (~ 10 paragraphs). Take note of the time window of each summary; Today is ${new Date().toISOString().split('T')[0]}. More recent information is more important.
-    
-    Summaries: 
-    
-    
-    ${summaries.map(s => `${s.timeWindow}\n${s.summary}`).join('\n\n\n\n')}
-    `
+    input: MERGE_INSTRUCTION({ summaries }),
   });
 
   return response.output_text;

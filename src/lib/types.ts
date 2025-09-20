@@ -8,6 +8,7 @@ export interface Tweet {
 export interface SummaryInTime {
   summary: string;
   timeWindow: string;
+  tweetCount: number;
 }
 
 export interface UserSummary {

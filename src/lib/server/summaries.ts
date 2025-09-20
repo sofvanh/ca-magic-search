@@ -23,7 +23,9 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
     const tweets = await getTweetsPaginated(account.account_id);
 
     const chunkedTweets = chunkTweets(tweets);
+    log(`Chunked tweets into ${chunkedTweets.length} chunks`)
     const chunkedSummaries = await getChunkedSummaries(chunkedTweets)
+    log(`Generated summaries for ${chunkedSummaries.length} chunks`)
     const finalSummary = await getFinalSummary(chunkedSummaries)
 
     log(`Generated summary for ${username}`)
@@ -36,6 +38,22 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
 }
 
 function chunkTweets(tweets: Tweet[]): Tweet[][] {
+  const yearly = chunkTweetsByYear(tweets);
+  const chunks: Tweet[][] = [];
+  for (const chunk of yearly) {
+    const chunked = chunkTweetsByChunkSize(chunk);
+    chunks.push(...chunked);
+  }
+  return chunks;
+}
+
+function chunkTweetsByYear(tweets: Tweet[]): Tweet[][] {
+  const grouped = Object.groupBy(tweets, (tweet) => new Date(tweet.created_at).getFullYear());
+  const chunks = Object.values(grouped).map((tweets) => tweets!.slice(0, 20000));
+  return chunks;
+}
+
+function chunkTweetsByChunkSize(tweets: Tweet[]): Tweet[][] {
   const numChunks = Math.ceil(tweets.length / 20000);
   const chunkSize = Math.ceil(tweets.length / numChunks);
   const chunkedTweets: Tweet[][] = Array.from({ length: numChunks }, (_, i) =>
