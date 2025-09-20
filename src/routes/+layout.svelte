@@ -17,7 +17,6 @@
 	<nav class="flex items-center gap-4 px-4 py-2">
 		<a href="/">Home</a>
 		<a href="/about">About</a>
-		<a href="/data">Data</a>
 	</nav>
 </header>
 

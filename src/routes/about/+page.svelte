@@ -1,5 +1,17 @@
-<div class="mx-auto my-12 prose flex flex-col items-center p-4">
-	<h1>Data</h1>
+<div class="mx-auto my-12 prose flex flex-col p-4">
+	<h1>About</h1>
+
+	<p>
+		<a
+			href="https://x.com/sofvanh/status/1962519165513748601"
+			target="_blank"
+			rel="noopener noreferrer">More info</a
+		>
+	</p>
+
+	<p>TODO finish this page :)</p>
+
+	<h2>Data</h2>
 
 	<p>
 		All our data is sourced from the <a href="https://www.community-archive.org/"
