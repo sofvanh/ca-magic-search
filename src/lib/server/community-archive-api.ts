@@ -69,3 +69,18 @@ export async function getAccountInfo(usernames: string[]): Promise<SupabaseAccou
   const accounts = data as SupabaseAccountInfo[];
   return accounts;
 }
+
+export async function getUnprocessedUsers(processedUserIds: string[]) {
+  const { data, error } = await getSupabase()
+    .from('account')
+    .select('account_id, username, account_display_name')
+    .not('account_id', 'in', `(${processedUserIds.join(',')})`)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    console.error("Error fetching unprocessed users:", error);
+    throw error;
+  }
+
+  return data as SupabaseAccountInfo[];
+}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ProcessAllUsersForm from '$lib/components/ProcessAllUsersForm.svelte';
+
 	let usernames = $state('');
 	let adminPassword = $state('');
 	let processing = $state(false);
@@ -57,3 +59,5 @@
 		<div class="result">{result}</div>
 	{/if}
 </form>
+
+<ProcessAllUsersForm />

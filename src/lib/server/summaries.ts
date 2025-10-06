@@ -15,12 +15,15 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
   const summaries: { id: string, username: string, displayName: string, summary: string, tweetCount: number }[] = [];
   for (const account of accounts) {
 
-    // TODO Would be good if, if there's lots of tweets, we could be fetching tweets and generating summaries in parallel
-
     const username = account.username;
     if (debug) console.log(`Getting tweets for ${username}`)
 
     const tweets = await getTweetsPaginated(account.account_id);
+
+    if (tweets.length === 0) {
+      log(`No tweets found for ${username}`)
+      continue;
+    }
 
     const chunkedTweets = chunkTweets(tweets);
     log(`Chunked tweets into ${chunkedTweets.length} chunks`)
@@ -63,12 +66,7 @@ function chunkTweetsByChunkSize(tweets: Tweet[]): Tweet[][] {
 }
 
 async function getChunkedSummaries(chunkedTweets: Tweet[][]): Promise<SummaryInTime[]> {
-  const chunkedSummaries: SummaryInTime[] = [];
-  for (const chunk of chunkedTweets) {
-    const summary = await generateSummary(chunk);
-    chunkedSummaries.push(summary);
-  }
-  return chunkedSummaries;
+  return Promise.all(chunkedTweets.map(chunk => generateSummary(chunk)));
 }
 
 async function getFinalSummary(chunkedSummaries: SummaryInTime[]): Promise<string> {

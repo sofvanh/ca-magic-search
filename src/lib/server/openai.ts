@@ -43,6 +43,7 @@ function getClient(): OpenAI {
 
 export async function generateSummary(tweets: Tweet[]): Promise<SummaryInTime> {
   log(`Generating summary for ${tweets.length} tweets`);
+  const start = Date.now();
 
   const firstDate = tweets[0]?.created_at;
   const lastDate = tweets[tweets.length - 1]?.created_at;
@@ -52,8 +53,8 @@ export async function generateSummary(tweets: Tweet[]): Promise<SummaryInTime> {
     input: SUMMARY_INSTRUCTION({ timeWindow, tweets }),
   });
 
-  console.log(`${response.usage?.output_tokens} output tokens, ${response.output_text.length} characters in summary`);
-  console.log(`Average tokens per tweet: ${((response.usage?.input_tokens ?? 0) / tweets.length).toFixed(2)} (${response.usage?.input_tokens} input tokens for ${tweets.length} tweets)`);
+  const seconds = ((Date.now() - start) / 1000).toFixed(1);
+  log(`Finished summary for ${tweets.length} tweets (${seconds} s)`);
 
   return { summary: response.output_text, timeWindow, tweetCount: tweets.length };
 }
