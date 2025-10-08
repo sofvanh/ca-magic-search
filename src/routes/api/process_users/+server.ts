@@ -69,7 +69,7 @@ async function handleSSEProcessing(usernames: string[]) {
 
             const summary = (await generateSummaries([username]))[0];
             const embeddings = await getEmbedding(summary.summary);
-            await storeUserSummary({
+            const stored = await storeUserSummary({
               userId: summary.id,
               username: summary.username,
               displayName: summary.displayName,
@@ -77,6 +77,7 @@ async function handleSSEProcessing(usernames: string[]) {
               embedding: embeddings,
               tweetCount: summary.tweetCount,
             });
+            log(`Stored summary for ${username}: ${stored}`);
           } catch (error) {
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({
               type: 'error',

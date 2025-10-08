@@ -15,8 +15,7 @@ export async function GET({ request }) {
 
   try {
     const processedUserIds = await getUsers();
-    const allnewUsers = await getUnprocessedUsers(processedUserIds.map(user => user.userId));
-    const newUsers = allnewUsers.slice(0, 1);
+    const newUsers = await getUnprocessedUsers(processedUserIds.map(user => user.userId));
     return json({ success: true, newUsers });
   } catch (error) {
     return json({ success: false, error: 'Error getting new users' });

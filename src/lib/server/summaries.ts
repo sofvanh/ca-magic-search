@@ -57,7 +57,7 @@ function chunkTweetsByYear(tweets: Tweet[]): Tweet[][] {
 }
 
 function chunkTweetsByChunkSize(tweets: Tweet[]): Tweet[][] {
-  const numChunks = Math.ceil(tweets.length / 20000);
+  const numChunks = Math.ceil(tweets.length / 15000);
   const chunkSize = Math.ceil(tweets.length / numChunks);
   const chunkedTweets: Tweet[][] = Array.from({ length: numChunks }, (_, i) =>
     tweets.slice(i * chunkSize, (i + 1) * chunkSize)
@@ -66,7 +66,14 @@ function chunkTweetsByChunkSize(tweets: Tweet[]): Tweet[][] {
 }
 
 async function getChunkedSummaries(chunkedTweets: Tweet[][]): Promise<SummaryInTime[]> {
-  return Promise.all(chunkedTweets.map(chunk => generateSummary(chunk)));
+  // Process up to 12 at a time
+  const results: SummaryInTime[] = [];
+  for (let i = 0; i < chunkedTweets.length; i += 12) {
+    const batch = chunkedTweets.slice(i, i + 12);
+    const batchResults = await Promise.all(batch.map(chunk => generateSummary(chunk)));
+    results.push(...batchResults);
+  }
+  return results;
 }
 
 async function getFinalSummary(chunkedSummaries: SummaryInTime[]): Promise<string> {

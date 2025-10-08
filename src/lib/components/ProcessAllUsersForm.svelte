@@ -9,6 +9,8 @@
 	let result = $state('');
 	let error = $state('');
 
+	const USER_PROCESS_LIMIT = 50;
+
 	async function getUsersToProcess(event: SubmitEvent) {
 		event.preventDefault();
 		try {
@@ -47,7 +49,7 @@
 					Accept: 'text/event-stream'
 				},
 				body: JSON.stringify({
-					usernames: userList.map((user) => user.username),
+					usernames: userList.map((user) => user.username).slice(0, USER_PROCESS_LIMIT),
 					adminPassword
 				})
 			});
@@ -145,7 +147,9 @@
 				{/each}
 			</div>
 
-			<button type="submit" class="rounded bg-green-600 px-4 py-2 text-white"> Proceed </button>
+			<button type="submit" class="rounded bg-green-600 px-4 py-2 text-white">
+				Proceed (processing {USER_PROCESS_LIMIT} users)
+			</button>
 		</form>
 	{/if}
 
