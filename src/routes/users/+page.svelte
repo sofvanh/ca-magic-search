@@ -4,7 +4,7 @@
 	let { form }: { form?: { results: UserSummaryDisplay[] } } = $props();
 </script>
 
-<div class="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 p-4 pt-8">
+<div class="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 p-4">
 	<h1 class="text-2xl font-semibold tracking-wider">Search by username</h1>
 	<p class="">Find out how Magic Search sees you</p>
 

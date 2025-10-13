@@ -23,7 +23,7 @@
 	</div>
 </header>
 
-<div class="flex min-h-dvh flex-col pt-16">
+<div class="flex min-h-dvh flex-col pt-24">
 	<main class="flex flex-1 flex-col">{@render children?.()}</main>
 
 	<footer class="flex flex-col items-center justify-center bg-stone-50 px-4 py-8 text-sm">
