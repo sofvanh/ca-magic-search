@@ -32,12 +32,6 @@
 </script>
 
 <div class="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-4 p-4">
-	<p
-		class="mb-4 max-w-sm rounded-md border border-amber-200 bg-amber-50 p-3 text-center text-sm text-amber-800"
-	>
-		<strong>Beta:</strong> Only a fraction of users indexed. If you want to help in the testing, reach
-		out to @sofvanh !
-	</p>
 	<h1 class="text-center text-2xl font-semibold tracking-wider">Who do you need right now?</h1>
 	<p class="text-center">
 		Find the best person for
@@ -63,6 +57,17 @@
 	</form>
 
 	<p class="text-center text-sm text-stone-500">
-		Search the entire Community Archive for your niche need
+		Search the entire <a
+			href="https://www.community-archive.org/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="text-lime-700 underline hover:text-lime-900">Community Archive</a
+		> for your niche need
+	</p>
+	<p class="text-center text-sm text-stone-500">
+		Curious how it works? Look up users in the <a
+			href="/users"
+			class="text-lime-700 underline hover:text-lime-900">username search</a
+		> and see behind the scenes
 	</p>
 </div>
