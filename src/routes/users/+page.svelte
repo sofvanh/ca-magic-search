@@ -1,33 +1,62 @@
 <script lang="ts">
-	import type { UserSummaryDisplay } from '$lib/types';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 
-	let { form }: { form?: { results: UserSummaryDisplay[] } } = $props();
+	let { data } = $props();
+
+	let searchQuery = $state(page.url.searchParams.get('q') || '');
+	let isLoading = $state(false);
+
+	async function handleSearch(e: Event) {
+		e.preventDefault();
+		if (!searchQuery.trim()) return;
+
+		isLoading = true;
+		await goto(`/users?q=${encodeURIComponent(searchQuery)}`, {
+			keepFocus: true,
+			noScroll: true
+		});
+		isLoading = false;
+	}
 </script>
 
 <div class="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 p-4">
 	<h1 class="text-2xl font-semibold tracking-wider">Search by username</h1>
 	<p class="">Find out how Magic Search sees you</p>
 
-	<form class="relative w-full" method="POST">
+	<form class="relative w-full" onsubmit={handleSearch}>
 		<input
+			bind:value={searchQuery}
 			name="q"
 			type="text"
 			class="focus:shadow-3xl w-full p-4 pr-20! shadow-lg shadow-lime-500/20! transition-all! duration-300 focus:shadow-2xl! focus:shadow-lime-500/50!"
 			placeholder="username"
 			required
+			disabled={isLoading}
 		/>
-		<button class="absolute top-2 right-2 p-2!" aria-label="Search">Search</button>
+		<button class="absolute top-2 right-2 p-2!" aria-label="Search" disabled={isLoading}>
+			{isLoading ? '...' : 'Search'}
+		</button>
 	</form>
 
-	{#if !form?.results}
+	{#if !data.results}
 		<p class="text-sm text-stone-500">Finds matching usernames and their summaries</p>
 	{/if}
 
-	{#if form?.results}
+	{#if isLoading}
+		<div class="flex items-center gap-2 text-stone-500">
+			<div
+				class="h-4 w-4 animate-spin rounded-full border-2 border-lime-500 border-t-transparent"
+			></div>
+			<span>Searching...</span>
+		</div>
+	{/if}
+
+	{#if data.results}
 		<p class="mb-2 text-stone-500">
-			Found {form.results.length} result{form.results.length === 1 ? '' : 's'}
+			Found {data.results.length} result{data.results.length === 1 ? '' : 's'}
 		</p>
-		{#each form.results as result}
+		{#each data.results as result}
 			<div class="w-full rounded-md border border-stone-200 p-4">
 				<div class="mb-2 flex flex-col gap-2 sm:flex-row sm:gap-4">
 					{#if result.displayName}
