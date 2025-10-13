@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
-@import '@fontsource-variable/inconsolata';
+/* @import '@fontsource-variable/inconsolata'; */
+@import '@fontsource/ibm-plex-mono';
 
 @theme {
-  --font-sans: 'Inconsolata Variable', sans-serif;
+  --font-sans: 'IBM Plex Mono', sans-serif;
 }
