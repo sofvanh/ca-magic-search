@@ -15,7 +15,8 @@
 		<p class="text-xs">For Community Archive</p>
 	</a>
 	<nav class="flex items-center gap-4 px-4 py-2">
-		<a href="/">Home</a>
+		<a href="/">Search</a>
+		<a href="/users">Users</a>
 		<a href="/about">About</a>
 	</nav>
 </header>

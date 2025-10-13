@@ -26,3 +26,12 @@ export interface SupabaseAccountInfo {
   username: string;
   account_display_name: string;
 }
+
+export interface UserSummaryDisplay {
+  userId: string;
+  username: string;
+  displayName: string | null;
+  summary: string;
+  tweetCount: number;
+  createdAt: string;
+}

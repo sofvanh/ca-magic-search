@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
-import type { UserSummary } from '$lib/types';
+import type { UserSummary, UserSummaryDisplay } from '$lib/types';
 
 const app = getApps().length === 0
   ? initializeApp({
@@ -58,4 +58,23 @@ export async function getUsers() {
       displayName: data.displayName
     };
   });
+}
+
+export async function searchUsersByUsername(query: string): Promise<UserSummaryDisplay[]> {
+  const snapshot = await db.collection('user-summaries').get();
+  const queryLower = query.toLowerCase();
+  
+  return snapshot.docs
+    .filter(doc => doc.data().username.toLowerCase().includes(queryLower))
+    .map(doc => {
+      const data = doc.data();
+      return {
+        userId: data.userId,
+        username: data.username,
+        displayName: data.displayName,
+        summary: data.summary,
+        tweetCount: data.tweetCount,
+        createdAt: data.createdAt.toDate().toISOString()
+      };
+    });
 }
