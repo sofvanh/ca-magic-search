@@ -9,7 +9,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<header class="center-content fixed top-0 right-0 left-0 z-10 bg-stone-50">
+<header class="center-content top-0 right-0 left-0 z-10 bg-stone-50 sm:fixed">
 	<div class="mx-auto flex max-w-2xl justify-between gap-4 py-2">
 		<a href="/" class="flex flex-col items-center px-4 py-2">
 			<h1 class="text-2xl font-semibold tracking-wider">Magic Search</h1>
@@ -26,7 +26,9 @@
 <div class="flex min-h-dvh flex-col pt-24">
 	<main class="flex flex-1 flex-col">{@render children?.()}</main>
 
-	<footer class="flex flex-col items-center justify-center bg-stone-50 px-4 py-8 text-sm">
+	<footer
+		class="flex flex-col items-center justify-center bg-stone-50 px-4 py-8 text-center text-sm"
+	>
 		<p class="px-4 py-2">
 			An <a
 				href="https://github.com/sofvanh/ca-magic-search"
