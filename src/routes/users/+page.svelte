@@ -72,7 +72,9 @@
 				</div>
 
 				<p class="my-2 text-sm text-stone-500">
-					{result.tweetCount} tweets • Generated {new Date(result.createdAt).toLocaleDateString()}
+					{result.tweetCount} tweets
+					<!-- TODO Fix createdAt and show it again -->
+					<!-- • Generated {new Date(result.createdAt).toLocaleDateString()} -->
 				</p>
 
 				<details class="group">
