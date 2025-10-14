@@ -1,4 +1,5 @@
 <script>
+	import DisclosureButton from '$lib/components/DisclosureButton.svelte';
 	import { onMount } from 'svelte';
 
 	const projects = [
@@ -31,8 +32,8 @@
 	});
 </script>
 
-<div class="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-4 p-4">
-	<h1 class="text-center text-2xl font-semibold tracking-wider">Who do you need right now?</h1>
+<div class="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 p-4">
+	<h1 class="text-center text-2xl font-medium tracking-wider">Who do you need right now?</h1>
 	<p class="text-center">
 		Find the best person for
 		<span
@@ -64,10 +65,26 @@
 			class="text-lime-700 underline hover:text-lime-900">Community Archive</a
 		> for your niche need
 	</p>
-	<p class="text-center text-sm text-stone-500">
-		Curious how it works? Look up users in the <a
-			href="/users"
-			class="text-lime-700 underline hover:text-lime-900">username search</a
-		> and see behind the scenes
-	</p>
+	<div class="py-4">
+		<DisclosureButton label="Tips for crafting a great query" isOpenAtStart={false}>
+			<div>
+				<p>
+					The search currently does a <b>semantic search over summaries of users.</b> This means that
+					the best queries describe the person you're looking for in as much detail as possible.
+				</p>
+				<p class="my-2">Examples:</p>
+				<ul class="my-2 list-disc pl-6">
+					<li>"AI alignment researcher building buddhist AI"</li>
+					<li>"Europe-based socialite who commentates on European tropes and politics"</li>
+					<li>"philosopher and crypto nerd in one"</li>
+				</ul>
+				<p>
+					To view summaries directly, use the <a
+						href="/users"
+						class="text-lime-700 underline hover:text-lime-900">username search</a
+					>.
+				</p>
+			</div>
+		</DisclosureButton>
+	</div>
 </div>

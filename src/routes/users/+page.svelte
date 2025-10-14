@@ -54,7 +54,7 @@
 	{/if}
 
 	{#if data.results}
-		<p class="mb-2 text-stone-500">
+		<p class="mb-2 text-sm text-stone-500">
 			Found {data.results.length} result{data.results.length === 1 ? '' : 's'}
 		</p>
 		{#each data.results as result (result.userId)}
@@ -77,7 +77,9 @@
 				</p>
 
 				<DisclosureButton label="Summary" isOpenAtStart={data.results.length === 1}>
-					{result.summary}
+					<p class="whitespace-pre-line">
+						{result.summary}
+					</p>
 				</DisclosureButton>
 			</div>
 		{/each}

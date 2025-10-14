@@ -11,7 +11,7 @@
 		>
 		{label}
 	</summary>
-	<p class="mt-2 text-sm whitespace-pre-line text-stone-600">
+	<div class="mt-2 text-sm text-stone-600">
 		{@render children?.()}
-	</p>
+	</div>
 </details>
