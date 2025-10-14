@@ -56,7 +56,7 @@
 		<p class="mb-2 text-stone-500">
 			Found {data.results.length} result{data.results.length === 1 ? '' : 's'}
 		</p>
-		{#each data.results as result}
+		{#each data.results as result (result.userId)}
 			<div class="w-full rounded-md border border-stone-200 p-4">
 				<div class="mb-2 flex flex-col gap-2 sm:flex-row sm:gap-4">
 					{#if result.displayName}
@@ -72,9 +72,7 @@
 				</div>
 
 				<p class="my-2 text-sm text-stone-500">
-					{result.tweetCount} tweets
-					<!-- TODO Fix createdAt and show it again -->
-					<!-- • Generated {new Date(result.createdAt).toLocaleDateString()} -->
+					{result.tweetCount} tweets • Generated {new Date(result.createdAt).toLocaleDateString()}
 				</p>
 
 				<details class="group">

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { createClient } from '@supabase/supabase-js';
-import type { SupabaseAccountInfo, Tweet } from '../types';
+import type { AccountInfo, Tweet } from '../types';
 
 dotenv.config()
 
@@ -20,7 +20,7 @@ function getSupabase() {
 
 export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
   let allTweets: Tweet[] = [];
-  let batchSize = 1000;
+  const batchSize = 1000;
   let offset = 0;
   let done = false;
 
@@ -55,10 +55,10 @@ export async function getTweetsPaginated(accountId: string): Promise<Tweet[]> {
   return allTweets; // Return the accumulated results
 }
 
-export async function getAccountInfo(usernames: string[]): Promise<SupabaseAccountInfo[]> {
+export async function getAccountInfo(usernames: string[]): Promise<AccountInfo[]> {
   const { data, error } = await getSupabase()
     .from('account')
-    .select('account_id, username, account_display_name')
+    .select('accountId:account_id, username, displayName:account_display_name')
     .in('username', usernames);
 
   if (error) {
@@ -66,14 +66,14 @@ export async function getAccountInfo(usernames: string[]): Promise<SupabaseAccou
     throw error;
   }
 
-  const accounts = data as SupabaseAccountInfo[];
+  const accounts = data as AccountInfo[];
   return accounts;
 }
 
-export async function getUnprocessedUsers(processedUserIds: string[]) {
+export async function getUnprocessedUsers(processedUserIds: string[]): Promise<AccountInfo[]> {
   const { data, error } = await getSupabase()
     .from('account')
-    .select('account_id, username, account_display_name')
+    .select('accountId:account_id, username, displayName:account_display_name')
     .not('account_id', 'in', `(${processedUserIds.join(',')})`)
     .order('created_at', { ascending: true });
 
@@ -82,5 +82,5 @@ export async function getUnprocessedUsers(processedUserIds: string[]) {
     throw error;
   }
 
-  return data as SupabaseAccountInfo[];
+  return data as AccountInfo[];
 }

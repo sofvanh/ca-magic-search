@@ -48,16 +48,9 @@ export async function searchUserSummaries(queryEmbedding: number[], limit = 10):
   return snapshot.docs.map(doc => ({ distance: doc.get('distance'), userSummary: doc.data() as UserSummary }));
 }
 
-export async function getUsers() {
+export async function getUsers(): Promise<UserSummary[]> {
   const snapshot = await db.collection('user-summaries').get();
-  return snapshot.docs.map(doc => {
-    const data = doc.data();
-    return {
-      userId: data.userId,
-      username: data.username,
-      displayName: data.displayName
-    };
-  });
+  return snapshot.docs.map(doc => doc.data() as UserSummary);
 }
 
 export async function searchUsersByUsername(query: string): Promise<UserSummaryDisplay[]> {

@@ -18,7 +18,7 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
     const username = account.username;
     if (debug) console.log(`Getting tweets for ${username}`)
 
-    const tweets = await getTweetsPaginated(account.account_id);
+    const tweets = await getTweetsPaginated(account.accountId);
 
     if (tweets.length === 0) {
       log(`No tweets found for ${username}`)
@@ -32,7 +32,7 @@ export async function generateSummaries(usernames: string[]): Promise<{ id: stri
     const finalSummary = await getFinalSummary(chunkedSummaries)
 
     log(`Generated summary for ${username}`)
-    summaries.push({ id: account.account_id, username, displayName: account.account_display_name, summary: finalSummary, tweetCount: tweets.length });
+    summaries.push({ id: account.accountId, username, displayName: account.displayName, summary: finalSummary, tweetCount: tweets.length });
 
     if (debug) createLog(username, tweets, chunkedSummaries, finalSummary);
   }

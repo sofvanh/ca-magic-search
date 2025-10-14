@@ -21,10 +21,10 @@ export interface UserSummary {
   createdAt: Timestamp;
 }
 
-export interface SupabaseAccountInfo {
-  account_id: string;
+export interface AccountInfo {
+  accountId: string;
   username: string;
-  account_display_name: string;
+  displayName: string;
 }
 
 export interface UserSummaryDisplay {
