@@ -3,8 +3,8 @@
 
 	<p>
 		Magic Search started as an exploration of the idea of "live markets", specifically live job
-		markets; Where rather than having to market yourself as something simple and legible (such as
-		"software engineer"), you could instead become visible as your full self, with all your talens
+		markets; where rather than having to market yourself as something simple and legible (such as
+		"software engineer"), you could instead become visible as your full self, with all your talents
 		and interests on display, without having to even think about the comms of it all. Ideally this
 		would lead to more meaningful, valuable, and idiosyncratic collaborations and opportunities.
 	</p>
