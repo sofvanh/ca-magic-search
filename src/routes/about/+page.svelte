@@ -12,7 +12,7 @@
 	<p>
 		I'm interested in safeguarding job security for humans in the future, because I worry about
 		large-scale unrest as a result of displacement of humans by AI, and I'm concerned what will
-		happen when humans are no longer incetivised to strive for personal progress
+		happen when humans are no longer incentivised to strive for personal progress
 		(self-actualisation), and governments no longer incentivised to invest in their population.
 	</p>
 
@@ -31,7 +31,7 @@
 	</p>
 
 	<p>
-		Magic Seach was built as part of the AI for Human Reasoning fellowship by the Future of Life
+		Magic Search was built as part of the AI for Human Reasoning fellowship by the Future of Life
 		Foundation.
 	</p>
 
@@ -58,7 +58,7 @@
 	</p>
 
 	<p>
-		If think your account isn't represented properly, it's probably a prompting error, or
+		If you think your account isn't represented properly, it's probably a prompting error, or
 		GPT-4.1-mini isn't intelligent enough to capture your magic with sufficient subtleness. Reach
 		out to me if so.
 	</p>
