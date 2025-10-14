@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import DisclosureButton from '$lib/components/DisclosureButton.svelte';
 	const { username, displayName, summary, distance, query } = $props();
 
 	let explanation: string | null = $state(null);
@@ -7,6 +7,7 @@
 	let showTooltip: boolean = $state(false);
 
 	async function loadExplanation() {
+		if (explanation) return;
 		isLoading = true;
 
 		try {
@@ -65,43 +66,24 @@
 		</div>
 	</div>
 
-	{#if explanation}
-		<div class="text-sm text-stone-500" in:slide|global out:slide|global>
-			<p>
-				{explanation}
-			</p>
-			<a
-				href={`/users?q=${username}`}
-				class="mt-2 block text-lime-600 hover:text-lime-700 hover:underline"
-			>
-				View full user summary
-			</a>
-		</div>
-	{:else if isLoading}
-		<div class="flex items-center gap-2 text-stone-500" in:slide|global out:slide|global>
-			<div
-				class="h-4 w-4 animate-spin rounded-full border-2 border-lime-500 border-t-transparent"
-			></div>
-			<span>Generating...</span>
-		</div>
-	{:else}
-		<button in:slide|global out:slide|global onclick={loadExplanation} class="text-sm!">
-			<span aria-hidden="true">↓</span>
-			How are they relevant?
-		</button>
-	{/if}
+	<DisclosureButton label="How are they relevant?" isOpenAtStart={false} onOpen={loadExplanation}>
+		{#if explanation}
+			<p>{explanation}</p>
+		{:else if isLoading}
+			<div class="flex items-center gap-2 text-stone-500">
+				<div
+					class="h-4 w-4 animate-spin rounded-full border-2 border-lime-500 border-t-transparent"
+				></div>
+				<span>Generating...</span>
+			</div>
+		{:else}
+			<p>Explanation unavailable</p>
+		{/if}
+		<a
+			href={`/users?q=${username}`}
+			class="mt-2 block text-lime-600 hover:text-lime-700 hover:underline"
+		>
+			View full user summary
+		</a>
+	</DisclosureButton>
 </div>
-
-<style>
-	button {
-		display: block;
-		padding: 0.25em 0.75em;
-		border: none;
-		background: var(--color-stone-100);
-		color: var(--color-stone-700);
-	}
-	button:hover {
-		background: var(--color-stone-200);
-		color: var(--color-stone-700);
-	}
-</style>
