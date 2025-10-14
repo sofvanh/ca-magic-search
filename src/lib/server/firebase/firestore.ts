@@ -33,7 +33,7 @@ export async function storeUserSummary(data: {
   return docRef.id;
 }
 
-export async function searchUserSummaries(queryEmbedding: number[], limit = 10): Promise<{ distance: number, userSummary: UserSummary }[]> {
+export async function searchUserSummaries(queryEmbedding: number[], limit = 20): Promise<{ distance: number, userSummary: UserSummary }[]> {
   const vectorQuery = db
     .collection('user-summaries')
     .findNearest({
