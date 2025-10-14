@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import DisclosureButton from '$lib/components/DisclosureButton.svelte';
 
 	let { data } = $props();
 
@@ -75,18 +76,9 @@
 					{result.tweetCount} tweets • Generated {new Date(result.createdAt).toLocaleDateString()}
 				</p>
 
-				<details class="group">
-					<summary
-						class="-mx-2 w-fit cursor-pointer rounded bg-stone-100 px-3 py-1 text-sm text-stone-700 hover:bg-stone-200"
-						style="list-style: none;"
-					>
-						<span aria-hidden="true" class="inline-block transition-transform group-open:rotate-180"
-							>↓</span
-						>
-						Summary
-					</summary>
-					<p class="mt-2 text-sm whitespace-pre-line text-stone-600">{result.summary}</p>
-				</details>
+				<DisclosureButton label="Summary" isOpenAtStart={data.results.length === 1}>
+					{result.summary}
+				</DisclosureButton>
 			</div>
 		{/each}
 	{/if}
