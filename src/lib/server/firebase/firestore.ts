@@ -55,10 +55,13 @@ export async function getUsers(): Promise<UserSummary[]> {
 
 export async function searchUsersByUsername(query: string): Promise<UserSummaryDisplay[]> {
   const snapshot = await db.collection('user-summaries').get();
-  const queryLower = query.toLowerCase();
+  let cleanQuery = query.trim().toLowerCase();
+  if (cleanQuery.startsWith('@')) {
+    cleanQuery = cleanQuery.slice(1);
+  }
   
   return snapshot.docs
-    .filter(doc => doc.data().username.toLowerCase().includes(queryLower))
+    .filter(doc => doc.data().username.toLowerCase().includes(cleanQuery))
     .map(doc => {
       const data = doc.data();
       return {
