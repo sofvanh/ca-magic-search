@@ -79,7 +79,7 @@ export async function getEmbedding(text: string): Promise<number[]> {
 export async function explainSearchResult(summary: string, query: string): Promise<string> {
   const response = await getClient().responses.create({
     model: "gpt-4.1",
-    input: `For the following query, give a very concise explanation (1-2 sentences) of how it matches with the user summary. Don't name the query, or say "The query" or "The user summary"; cut all fluff and just give the explanation, in third person. Explain how it matches, and how it doesn't match, as applicable. We're trying to describe why this user came up in the search for this query.
+    input: `For the following query, give a very concise explanation (1-2 sentences) of how it matches with the user summary. Don't name the query, or say "The query" or "The user summary"; cut all fluff and just give the explanation, in third person. Explain how it matches, and how it doesn't match, as applicable. We're trying to describe why this user came up in the search for this query. Don't assume the gender or pronouns of the user in the summary, unless it's explicitly stated.
 
     Query: ${query}
     User summary: ${summary}
