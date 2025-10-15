@@ -54,16 +54,12 @@
 <style>
 	header a {
 		color: var(--color-lime-600);
-		transition:
-			color 0.5s,
-			text-decoration-color 0.5s;
 		text-underline-offset: 4px;
 		text-decoration-color: transparent;
 	}
 	footer a {
 		color: var(--color-lime-600);
 		text-decoration: underline;
-		transition: color 0.2s;
 	}
 	header a:hover,
 	footer a:hover {
