@@ -67,13 +67,17 @@
 	</p>
 	<div class="py-4">
 		<DisclosureButton label="Tips for crafting a great query" isOpenAtStart={false}>
-			<div>
+			<div class="space-y-2">
 				<p>
 					The search currently does a <b>semantic search over summaries of users.</b> This means that
 					the best queries describe the person you're looking for in as much detail as possible.
 				</p>
-				<p class="my-2">Examples:</p>
-				<ul class="my-2 list-disc pl-6">
+				<p>
+					Instead of "I'm looking for a coach to help with my burnout", try "somatic burnout
+					coaching".
+				</p>
+				<p>Other examples:</p>
+				<ul class="list-disc pl-6">
 					<li>"AI alignment researcher building buddhist AI"</li>
 					<li>"Europe-based socialite who commentates on European tropes and politics"</li>
 					<li>"philosopher and crypto nerd in one"</li>
